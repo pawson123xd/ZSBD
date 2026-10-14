@@ -1,0 +1,4 @@
+INSERT INTO JOBS (job_id,job_title,min_salary,max_salary) VALUES (1,'Rozliczenia z tytułu podatku VAT',3200,9500);
+INSERT INTO JOBS (job_id,job_title,min_salary,max_salary) VALUES (2,'Zarzadzenie grupy',4000,5000);
+INSERT INTO JOBS (job_id,job_title,min_salary,max_salary) VALUES (3,'Organista',4000,8000);
+INSERT INTO JOBS (job_id,job_title,min_salary,max_salary) VALUES (4,'Sprzedawca',2000,3500);
