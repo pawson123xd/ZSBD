@@ -1,0 +1,54 @@
+create TABLE REGIONS (
+	region_id int  PRIMARY KEY,
+    region_name varchar(255) not null
+);
+create TABLE Countries (
+	country_id int PRIMARY KEY,
+    country_name varchar2(255)  not null
+);
+ALTER TABLE Countries ADD region_id int not null;
+ALTER TABLE Countries ADD CONSTRAINT region_id  FOREIGN KEY (region_id) REFERENCES REGIONS(region_id);
+create TABLE LOCATIONS (
+	location_id int PRIMARY KEY,
+    street_address varchar2(255)  not null
+);
+create TABLE JOBS (
+	job_id int  PRIMARY KEY,
+    job_title varchar2(255)  not null,
+    min_salary int CHECK(min_salary >= 2000),
+    max_salary int
+);
+create TABLE JOB_HISTORY (
+    employee_id    int NOT NULL,
+    start_date     DATE NOT NULL,
+    end_date       DATE,
+    job_id         int NOT NULL,
+    department_id  int
+);
+ALTER TABLE JOB_HISTORY ADD CONSTRAINT job_id  FOREIGN KEY (job_id) REFERENCES JOBS(job_id);
+create TABLE DEPARTMENT (
+    department_id  int  PRIMARY KEY,
+    department_name varchar2(255) NOT NULL,
+    manager_id int not null
+);
+ALTER TABLE DEPARTMENT ADD location_id int not null;
+ALTER TABLE DEPARTMENT ADD CONSTRAINT location_id  FOREIGN KEY (location_id) REFERENCES LOCATIONS(location_id);
+ALTER TABLE JOB_HISTORY ADD CONSTRAINT department_id  FOREIGN KEY (department_id) REFERENCES DEPARTMENT(department_id);
+create TABLE EMPLOYEES (
+    employee_id  int PRIMARY KEY,
+    first_name varchar2(50) NOT NULL,
+    last_name varchar2(50) NOT NULL,
+    email varchar2(100) NOT NULL,
+    phone_number varchar2(9) NOT NULL,
+    hire_date date NOT null,
+    job_id int NULL,
+    salary int,
+    commission_pct NUMBER(4,2) NOT NULL
+);
+ALTER TABLE EMPLOYEES ADD manager_id int null;
+ALTER TABLE EMPLOYEES ADD department_id int null;
+ALTER TABLE EMPLOYEES ADD CONSTRAINT employees_department FOREIGN KEY (department_id) REFERENCES DEPARTMENT(department_id);
+
+ALTER TABLE EMPLOYEES ADD CONSTRAINT employees_job FOREIGN KEY (job_id) REFERENCES JOBS(job_id);
+
+ALTER TABLE EMPLOYEES ADD CONSTRAINT employees_manager FOREIGN KEY (manager_id) REFERENCES EMPLOYEES(employee_id);
