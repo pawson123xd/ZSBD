@@ -1,1 +1,0 @@
-update employees set manager_id =1 where employee_id=2 or employee_id=3 
