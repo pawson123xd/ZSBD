@@ -1,0 +1,28 @@
+INSERT INTO employees (
+    employee_id, first_name, last_name, email, phone_number, 
+    hire_date, job_id, salary, commission_pct, manager_id, department_id
+) VALUES (
+    1, 'Jan', 'Nowak', '12345423543@gmail.com', '888999111', 
+    '2015-09-10', 1, 4000, 0.10, NULL, NULL
+);
+INSERT INTO employees (
+    employee_id, first_name, last_name, email, phone_number, 
+    hire_date, job_id, salary, commission_pct, manager_id, department_id
+) VALUES (
+    2, 'Kamil', 'Dadkiewicz', 'Kamildadkiewicz@gmail.com', '883949511', 
+    '2018-09-17', 2, 7000, 0.30, NULL, NULL
+);
+INSERT INTO employees (
+    employee_id, first_name, last_name, email, phone_number, 
+    hire_date, job_id, salary, commission_pct, manager_id, department_id
+) VALUES (
+    3, 'Piotr', 'Sowa', 'PiotrSowa@gmail.com', '088929571', 
+    '2018-09-17', 3, 5000, 0.30, NULL, NULL
+);
+INSERT INTO employees (
+    employee_id, first_name, last_name, email, phone_number, 
+    hire_date, job_id, salary, commission_pct, manager_id, department_id
+) VALUES (
+    4, 'Michał', 'Kołodziej', 'MichałKołodziej@gmail.com', '038979871', 
+    '2018-09-17', 4, 9000, 0.05, NULL, NULL
+);
