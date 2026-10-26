@@ -1,0 +1,5 @@
+select e.first_name,e.last_name,w.first_name,w.last_name from employees e inner JOIN 
+    employees w ON e.department_id = w.department_id
+WHERE 
+    e.first_name = 'Jennifer'
+    AND (e.employee_id <> w.employee_id);
