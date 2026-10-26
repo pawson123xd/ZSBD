@@ -1,0 +1,2 @@
+
+SELECT EXTRACT(MONTH FROM hire_date),COUNT(employee_id)FROM employees GROUP BY  EXTRACT(MONTH FROM hire_date);
