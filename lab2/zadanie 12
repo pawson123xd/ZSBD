@@ -1,0 +1,4 @@
+select * from employees  where  ROUND(MONTHS_BETWEEN(SYSDATE, hire_date)) > (
+SELECT
+    ROUND(AVG(MONTHS_BETWEEN(SYSDATE, hire_date)))
+FROM employees)
