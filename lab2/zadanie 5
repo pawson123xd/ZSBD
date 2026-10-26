@@ -1,0 +1,9 @@
+SELECT 
+    SUM(e.salary) AS suma_zarobkow, 
+    ROUND(AVG(e.salary)) AS srednia_zarobkow 
+FROM 
+    employees e 
+GROUP BY 
+    e.department_id 
+HAVING 
+    MIN(e.salary) > 5000;
