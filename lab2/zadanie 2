@@ -1,0 +1,4 @@
+
+select e.hire_date,e.last_name, &kolumna from employees e
+where e.manager_id is not null and e.hire_date >=DATE '2005-01-01' and e.hire_date < DATE '2006-01-01' 
+order by  &kolumna;
