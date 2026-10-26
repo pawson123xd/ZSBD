@@ -1,0 +1,57 @@
+Create table departments as select * from HR.departments
+Create table countries as select * from HR.countries
+Create table employees as select * from HR.employees
+Create table job_grades as select * from HR.job_grades
+Create table job_history as select * from HR.job_history
+Create table jobs as select * from HR.jobs
+Create table Locations as select * from HR.locations
+Create table PRODUCTS as select * from HR.products
+Create table REGIONS as select * from HR.regions
+Create table SALES as select * from HR.sales
+Create table departments as select * from HR.departments
+Create table countries as select * from HR.countries
+ 
+ 
+ALTER TABLE countries ADD CONSTRAINT pk_countries PRIMARY KEY (country_id);
+ALTER TABLE regions
+ADD CONSTRAINT pk_regions PRIMARY KEY (region_id);
+ALTER TABLE countries
+ADD CONSTRAINT fk_countries
+FOREIGN KEY (region_id)
+REFERENCES regions(region_id);
+
+ALTER TABLE Locations
+ADD CONSTRAINT pk_locations PRIMARY KEY (Location_id);
+ALTER TABLE Locations 
+ADD CONSTRAINT fk_countries FOREIGN KEY (Country_id) REFERENCES countries(country_id);
+
+ALTER TABLE jobs
+ADD CONSTRAINT pk_jobs PRIMARY KEY (job_id);
+
+ALTER TABLE Locations
+ADD CONSTRAINT pk_locations PRIMARY KEY (Location_id);
+
+ALTER TABLE EMPLOYEES 
+ADD CONSTRAINT pk_EMPLOYEES  PRIMARY KEY (EMPLOYEE_id);
+
+
+ALTER TABLE EMPLOYEES ADD CONSTRAINT fk_employees_job FOREIGN KEY (job_id) REFERENCES JOBS(job_id);
+
+ALTER TABLE EMPLOYEES ADD CONSTRAINT fk_employees_manager FOREIGN KEY (manager_id) REFERENCES EMPLOYEES(employee_id);
+
+ALTER TABLE departments 
+ADD CONSTRAINT pk_departments  PRIMARY KEY (department_id);
+
+ALTER TABLE departments 
+ADD CONSTRAINT fk_departments_employees FOREIGN KEY (manager_id) REFERENCES employees(employee_id);
+
+ALTER TABLE JOB_HISTORY ADD CONSTRAINT job_id  FOREIGN KEY (job_id) REFERENCES JOBS(job_id);
+ALTER TABLE JOB_HISTORY ADD CONSTRAINT department_id  FOREIGN KEY (department_id) REFERENCES DEPARTMENTS(department_id);
+ALTER TABLE departments ADD CONSTRAINT fk_departments_locations FOREIGN KEY (location_id) REFERENCES locations(location_id);
+
+
+ALTER TABLE JOB_HISTORY ADD CONSTRAINT department_id  FOREIGN KEY (department_id) REFERENCES DEPARTMENTS(department_id);
+
+
+ALTER TABLE products 
+ADD CONSTRAINT pk_products PRIMARY KEY (product_id);
