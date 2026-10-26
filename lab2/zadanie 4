@@ -1,0 +1,14 @@
+select e.first_name || '' || e.last_name as imie_nazwisko,   ROUND(MONTHS_BETWEEN(SYSDATE, hire_date)) AS liczba_miesiecy, 
+CASE 
+when
+ MONTHS_BETWEEN(SYSDATE, hire_date) < 150 
+ THEN  e.salary*0.10
+when
+ MONTHS_BETWEEN(SYSDATE, hire_date) BETWEEN 150 AND 200
+ THEN  e.salary*0.20
+ when
+ MONTHS_BETWEEN(SYSDATE, hire_date) > 200
+ THEN  e.salary*0.30
+ END AS wysokosc_dodatku
+from employees e
+ORDER BY liczba_miesiecy;
