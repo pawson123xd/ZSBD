@@ -1,0 +1,11 @@
+
+SELECT
+    r.region_name,
+    COUNT( c.country_id),
+    COUNT( e.employee_id)
+FROM regions r
+LEFT JOIN countries c   ON r.region_id = c.region_id
+LEFT JOIN locations l   ON c.country_id = l.country_id
+LEFT JOIN departments d ON l.location_id = d.location_id
+LEFT JOIN employees e   ON d.department_id = e.department_id
+GROUP BY r.region_name;
