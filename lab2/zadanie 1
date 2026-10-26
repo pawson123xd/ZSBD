@@ -1,0 +1,2 @@
+select e.first_name,e.last_name from employees e
+where e.department_id = 20 or e.department_id=50 and e.salary between 2000 and 7000 ORDER by e.last_name
