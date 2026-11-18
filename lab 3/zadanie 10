@@ -1,0 +1,6 @@
+
+CREATE VIEW zadanie10 AS
+SELECT *
+FROM employees e
+ORDER BY e.salary desc
+FETCH FIRST 10 ROWS ONLY;
