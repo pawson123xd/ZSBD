@@ -9,10 +9,3 @@ SET salary = 9000
 WHERE employee_id = 207;
 DELETE FROM zadanie2 
 WHERE employee_id = 207;
- 
-INSERT INTO zadanie1(employee_id, last_name, first_name) VALUES (207, 'Gram', 'joe');
-UPDATE zadanie1 
-SET first_name= 'jan'
-WHERE employee_id = 207;
-DELETE FROM zadanie1 
-WHERE employee_id = 207;
