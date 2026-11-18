@@ -1,0 +1,1 @@
+CREATE OR REPLACE VIEW v_wysokie_pensje as select * from employees e where e.salary  > 6000
