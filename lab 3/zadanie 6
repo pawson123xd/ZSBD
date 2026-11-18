@@ -1,0 +1,13 @@
+CREATE VIEW zadanie3 AS
+ select    
+    e.department_id,
+    d.department_name,
+    COUNT(d.department_name) AS liczba_pracownikow,
+    AVG(e.salary) AS srednia_pensja,
+    MAX(e.salary) AS najwyzsza_pensja
+    from employees e
+    inner join departments  d on d.department_id=e.department_id
+    GROUP  by      e.department_id,d.department_name
+    having COUNT(d.department_name) >= 4
+INSERT INTO zadanie3  (employee_id, d.department_name, LICZBA_PRACOWNIKOW, SREDNIA_PENSJA,NAJWYZSZA_PENSJA)
+VALUES (207,Finance,65,23,18798); 
