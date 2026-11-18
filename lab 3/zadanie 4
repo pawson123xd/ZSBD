@@ -1,0 +1,5 @@
+CREATE OR REPLACE VIEW zadanie1 AS 
+SELECT e.employee_id, e.last_name, e.first_name 
+FROM employees e
+inner join departments d on e.department_id=d.department_id
+where d.department_name='Finance'
