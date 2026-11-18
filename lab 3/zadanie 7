@@ -1,0 +1,20 @@
+CREATE OR REPLACE VIEW zadanie8 AS 
+SELECT * FROM employees e 
+WHERE e.salary BETWEEN 5000 AND 12000
+WITH CHECK OPTION;
+INSERT INTO zadanie8 (
+    employee_id, first_name, last_name, email, phone_number, 
+    hire_date, job_id, salary, commission_pct, manager_id, department_id
+)
+VALUES (
+    207, 'Jan', 'Kowalski', 'JKOWALSK', '515.123.4567', 
+    SYSDATE, 'IT_PROG', 8000, NULL, 103, 60
+);
+INSERT INTO zadanie8 (
+    employee_id, first_name, last_name, email, phone_number, 
+    hire_date, job_id, salary, commission_pct, manager_id, department_id
+)
+VALUES (
+    207, 'Jan', 'Kowalski', 'JKOWALSK', '515.123.4567', 
+    SYSDATE, 'IT_PROG', 13000, NULL, 103, 60
+);
