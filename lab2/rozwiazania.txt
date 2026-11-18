@@ -1,0 +1,111 @@
+DROP TABLE JOB_HISTORY CASCADE CONSTRAINTS PURGE;
+DROP TABLE EMPLOYEES CASCADE CONSTRAINTS PURGE;
+DROP TABLE DEPARTMENT CASCADE CONSTRAINTS PURGE;
+DROP TABLE LOCATIONS CASCADE CONSTRAINTS PURGE;
+DROP TABLE JOBS CASCADE CONSTRAINTS PURGE;
+DROP TABLE Countries CASCADE CONSTRAINTS PURGE;
+DROP TABLE REGIONS CASCADE CONSTRAINTS PURGE;
+
+create TABLE REGIONS (
+	region_id int  PRIMARY KEY,
+    region_name varchar(255) not null
+);
+create TABLE Countries (
+	country_id int PRIMARY KEY,
+    country_name varchar2(255)  not null
+);
+ALTER TABLE Countries ADD region_id int not null;
+ALTER TABLE Countries ADD CONSTRAINT region_id  FOREIGN KEY (region_id) REFERENCES REGIONS(region_id);
+create TABLE LOCATIONS (
+	location_id int PRIMARY KEY,
+    street_address varchar2(255)  not null
+);
+create TABLE JOBS (
+	job_id int  PRIMARY KEY,
+    job_title varchar2(255)  not null,
+    min_salary int CHECK(min_salary >= 2000),
+    max_salary int
+);
+create TABLE JOB_HISTORY (
+    employee_id    int NOT NULL,
+    start_date     DATE NOT NULL,
+    end_date       DATE,
+    job_id         int NOT NULL,
+    department_id  int
+);
+ALTER TABLE JOB_HISTORY ADD CONSTRAINT job_id  FOREIGN KEY (job_id) REFERENCES JOBS(job_id);
+create TABLE DEPARTMENT (
+    department_id  int  PRIMARY KEY,
+    department_name varchar2(255) NOT NULL,
+    manager_id int not null
+);
+ALTER TABLE DEPARTMENT ADD location_id int not null;
+ALTER TABLE DEPARTMENT ADD CONSTRAINT location_id  FOREIGN KEY (location_id) REFERENCES LOCATIONS(location_id);
+ALTER TABLE JOB_HISTORY ADD CONSTRAINT department_id  FOREIGN KEY (department_id) REFERENCES DEPARTMENT(department_id);
+create TABLE EMPLOYEES (
+    employee_id  int PRIMARY KEY,
+    first_name varchar2(50) NOT NULL,
+    last_name varchar2(50) NOT NULL,
+    email varchar2(100) NOT NULL,
+    phone_number varchar2(9) NOT NULL,
+    hire_date date NOT null,
+    job_id int NULL,
+    salary int,
+    commission_pct NUMBER(4,2) NOT NULL
+);
+ALTER TABLE EMPLOYEES ADD manager_id int null;
+ALTER TABLE EMPLOYEES ADD department_id int null;
+ALTER TABLE EMPLOYEES ADD CONSTRAINT employees_department FOREIGN KEY (department_id) REFERENCES DEPARTMENT(department_id);
+
+ALTER TABLE EMPLOYEES ADD CONSTRAINT employees_job FOREIGN KEY (job_id) REFERENCES JOBS(job_id);
+
+ALTER TABLE EMPLOYEES ADD CONSTRAINT employees_manager FOREIGN KEY (manager_id) REFERENCES EMPLOYEES(employee_id);
+
+
+INSERT INTO JOBS (job_id,job_title,min_salary,max_salary) VALUES (1,'Rozliczenia z tytułu podatku VAT',3200,9000);
+INSERT INTO JOBS (job_id,job_title,min_salary,max_salary) VALUES (2,'Zarzadzenie grupy',4000,5000);
+INSERT INTO JOBS (job_id,job_title,min_salary,max_salary) VALUES (3,'Zarzadzenie grupy',4000,8000);
+INSERT INTO JOBS (job_id,job_title,min_salary,max_salary) VALUES (4,'Sprzedawca',2000,3500);
+
+INSERT INTO employees (
+    employee_id, first_name, last_name, email, phone_number, 
+    hire_date, job_id, salary, commission_pct, manager_id, department_id
+) VALUES (
+    1, 'Jan', 'Nowak', '12345423543@gmail.com', '888999111', 
+    '2015-09-10', 1, 4000, 0.10, NULL, NULL
+);
+INSERT INTO employees (
+    employee_id, first_name, last_name, email, phone_number, 
+    hire_date, job_id, salary, commission_pct, manager_id, department_id
+) VALUES (
+    2, 'Kamil', 'Dadkiewicz', 'Kamildadkiewicz@gmail.com', '883949511', 
+    '2018-09-17', 2, 7000, 0.30, NULL, NULL
+);
+INSERT INTO employees (
+    employee_id, first_name, last_name, email, phone_number, 
+    hire_date, job_id, salary, commission_pct, manager_id, department_id
+) VALUES (
+    3, 'Piotr', 'Sowa', 'PiotrSowa@gmail.com', '088929571', 
+    '2018-09-17', 3, 5000, 0.30, NULL, NULL
+);
+INSERT INTO employees (
+    employee_id, first_name, last_name, email, phone_number, 
+    hire_date, job_id, salary, commission_pct, manager_id, department_id
+) VALUES (
+    4, 'Michał', 'Kołodziej', 'MichałKołodziej@gmail.com', '038979871', 
+    '2018-09-17', 4, 9000, 0.05, NULL, NULL
+);
+update employees set manager_id =1 where employee_id=2 or employee_id=3 
+
+
+update jobs set min_salary =min_salary+500 ,max_salary=max_salary+500 where job_title LIKE '%b%' or job_title LIKE '%s%' 
+
+ALTER TABLE EMPLOYEES DROP CONSTRAINT employees_job;
+ALTER TABLE EMPLOYEES  ADD CONSTRAINT employees_job  FOREIGN KEY (job_id) REFERENCES JOBS(job_id)  ON DELETE CASCADE;
+DELETE FROM jobs WHERE max_salary >9000;
+ROLLBACK;
+
+
+DROP TABLE REGIONS CASCADE CONSTRAINTS;
+ROLLBACK;
+
