@@ -1,79 +1,165 @@
-DROP TABLE IF EXISTS
-    EMPLOYEES,
-    JOB_HISTORY,
-    DEPARTMENT,
-    LOCATIONS,
-    JOBS,
-    Countries,
-    REGIONS;
-create TABLE REGIONS (
-	region_id int PRIMARY KEY AUTO_INCREMENT,
-    region_name varchar(255) not null
-);
-create TABLE Countries (
-	country_id int PRIMARY KEY AUTO_INCREMENT,
-    country_name varchar(255)  not null
-);
-ALTER TABLE Countries ADD region_id int not null;
-ALTER TABLE Countries ADD CONSTRAINT region_id  FOREIGN KEY (region_id) REFERENCES REGIONS(region_id);
-create TABLE LOCATIONS (
-	location_id int PRIMARY KEY AUTO_INCREMENT,
-    street_address varchar(255)  not null
-);
-create TABLE JOBS (
-	job_id int PRIMARY KEY AUTO_INCREMENT,
-    job_title varchar(255)  not null,
-    min_salary int CHECK(min_salary >= 2000),
-    max_salary int
-);
-create TABLE JOB_HISTORY (
-    employee_id    int NOT NULL,
-    start_date     DATE NOT NULL,
-    end_date       DATE,
-    job_id         int NOT NULL,
-    department_id  int
-);
+drop table COUNTRIES cascade constraints;
+drop table DEPARTMENT cascade constraints;
+drop table DEPARTMENTS cascade constraints;
+drop table EMPLOYEES cascade constraints;
+drop table JOB_HISTORY cascade constraints;
+drop table JOBS cascade constraints;
+drop table LOCATIONS cascade constraints;
+drop table REGIONS cascade constraints;
+ 
+Create table departments as select * from HR.departments
+Create table countries as select * from HR.countries
+Create table employees as select * from HR.employees
+Create table job_grades as select * from HR.job_grades
+Create table job_history as select * from HR.job_history
+Create table jobs as select * from HR.jobs
+Create table Locations as select * from HR.locations
+Create table PRODUCTS as select * from HR.products
+Create table REGIONS as select * from HR.regions
+Create table SALES as select * from HR.sales
+Create table departments as select * from HR.departments
+Create table countries as select * from HR.countries
+ 
+ 
+ALTER TABLE countries ADD CONSTRAINT pk_countries PRIMARY KEY (country_id);
+ALTER TABLE regions
+ADD CONSTRAINT pk_regions PRIMARY KEY (region_id);
+ALTER TABLE countries
+ADD CONSTRAINT fk_countries
+FOREIGN KEY (region_id)
+REFERENCES regions(region_id);
+
+ALTER TABLE Locations
+ADD CONSTRAINT pk_locations PRIMARY KEY (Location_id);
+ALTER TABLE Locations 
+ADD CONSTRAINT fk_countries FOREIGN KEY (Country_id) REFERENCES countries(country_id);
+
+ALTER TABLE jobs
+ADD CONSTRAINT pk_jobs PRIMARY KEY (job_id);
+
+ALTER TABLE Locations
+ADD CONSTRAINT pk_locations PRIMARY KEY (Location_id);
+
+ALTER TABLE EMPLOYEES 
+ADD CONSTRAINT pk_EMPLOYEES  PRIMARY KEY (EMPLOYEE_id);
+
+
+ALTER TABLE EMPLOYEES ADD CONSTRAINT fk_employees_job FOREIGN KEY (job_id) REFERENCES JOBS(job_id);
+
+ALTER TABLE EMPLOYEES ADD CONSTRAINT fk_employees_manager FOREIGN KEY (manager_id) REFERENCES EMPLOYEES(employee_id);
+
+ALTER TABLE departments 
+ADD CONSTRAINT pk_departments  PRIMARY KEY (department_id);
+
+ALTER TABLE departments 
+ADD CONSTRAINT fk_departments_employees FOREIGN KEY (manager_id) REFERENCES employees(employee_id);
+
 ALTER TABLE JOB_HISTORY ADD CONSTRAINT job_id  FOREIGN KEY (job_id) REFERENCES JOBS(job_id);
-create TABLE DEPARTMENT (
-    department_id  int PRIMARY KEY AUTO_INCREMENT,
-    department_name varchar(255) NOT NULL,
-    manager_id int not null
-);
-ALTER TABLE DEPARTMENT ADD location_id int not null;
-ALTER TABLE DEPARTMENT ADD CONSTRAINT location_id  FOREIGN KEY (location_id) REFERENCES LOCATIONS(location_id);
-ALTER TABLE JOB_HISTORY ADD CONSTRAINT department_id  FOREIGN KEY (department_id) REFERENCES DEPARTMENT(department_id);
-create TABLE EMPLOYEES (
-    employee_id  int PRIMARY KEY AUTO_INCREMENT,
-    first_name varchar(50) NOT NULL,
-    last_name varchar(50) NOT NULL,
-    email varchar(100) NOT NULL,
-    phone_number varchar(9) NOT NULL,
-    hire_date date NOT null,
-    job_id int NOT NULL,
-    salary int,
-    commission_pct varchar(255) NOT NULL
-);
-ALTER TABLE EMPLOYEES ADD manager_id int not null;
-ALTER TABLE EMPLOYEES ADD department_id int not null;
-ALTER TABLE EMPLOYEES
-ADD CONSTRAINT fk_employees_department
-FOREIGN KEY (department_id)
-REFERENCES DEPARTMENT(department_id);
+ALTER TABLE JOB_HISTORY ADD CONSTRAINT department_id  FOREIGN KEY (department_id) REFERENCES DEPARTMENTS(department_id);
+ALTER TABLE departments ADD CONSTRAINT fk_departments_locations FOREIGN KEY (location_id) REFERENCES locations(location_id);
 
-ALTER TABLE EMPLOYEES
-ADD CONSTRAINT fk_employees_job
-FOREIGN KEY (job_id)
-REFERENCES JOBS(job_id);
 
-ALTER TABLE EMPLOYEES
-ADD CONSTRAINT fk_employees_manager
-FOREIGN KEY (manager_id)
-REFERENCES EMPLOYEES(employee_id);
-INSERT INTO JOBS (job_title,min_salary,max_salary)
-VALUES ("ksiegowy",3200,4000);
-INSERT INTO JOBS (job_title,min_salary,max_salary)
-VALUES ("kadrowa",2500,5000);
-INSERT INTO JOBS (job_title,min_salary,max_salary)
-VALUES ("menedzer",4000,10000);
-INSERT INTO JOBS (job_title,min_salary,max_salary)
-VALUES ("pracownic",2000,3500);
+ALTER TABLE JOB_HISTORY ADD CONSTRAINT department_id  FOREIGN KEY (department_id) REFERENCES DEPARTMENTS(department_id);
+
+
+ALTER TABLE products 
+ADD CONSTRAINT pk_products PRIMARY KEY (product_id);
+
+
+select e.first_name,e.last_name from employees e
+where e.department_id = 20 or e.department_id=50 and e.salary between 2000 and 7000 ORDER by e.last_name
+
+
+select e.hire_date,e.last_name, &kolumna from employees e
+where e.manager_id is not null and e.hire_date >=DATE '2005-01-01' and e.hire_date < DATE '2006-01-01' 
+order by  &kolumna;
+
+select  e.first_name || ' ' || e.last_name AS imie_nazwisko , e.salary,e.phone_number  from employees e
+where e.last_name like '__e' and e.first_name like 'Da%'
+ORDER BY 1 DESC, 2 ASC;
+
+select e.first_name || '' || e.last_name as imie_nazwisko,   ROUND(MONTHS_BETWEEN(SYSDATE, hire_date)) AS liczba_miesiecy, 
+CASE 
+when
+ MONTHS_BETWEEN(SYSDATE, hire_date) < 150 
+ THEN  e.salary*0.10
+when
+ MONTHS_BETWEEN(SYSDATE, hire_date) BETWEEN 150 AND 200
+ THEN  e.salary*0.20
+ when
+ MONTHS_BETWEEN(SYSDATE, hire_date) > 200
+ THEN  e.salary*0.30
+ END AS wysokosc_dodatku
+from employees e
+ORDER BY liczba_miesiecy;
+
+
+SELECT 
+    SUM(e.salary) AS suma_zarobkow, 
+    ROUND(AVG(e.salary)) AS srednia_zarobkow 
+FROM 
+    employees e 
+GROUP BY 
+    e.department_id 
+HAVING 
+    MIN(e.salary) > 5000;
+
+SELECT
+    e.first_name,e.department_id,d.department_name , e.job_id
+FROM employees e
+inner join departments d on e.department_id = d.department_id
+inner join locations l on d.location_id = l.location_id
+where l.city='Toronto'
+
+select e.first_name,e.last_name,w.first_name,w.last_name from employees e inner JOIN 
+    employees w ON e.department_id = w.department_id
+WHERE 
+    e.first_name = 'Jennifer'
+    AND (e.employee_id <> w.employee_id);
+
+select d.department_id,d.department_name from departments d  inner join employees e on d.department_id = e.department_id
+where e.employee_id is null
+
+select e.first_name,e.last_name,e.job_id,d.department_name,e.salary from employees e 
+inner join departments d on e.department_id =d.department_id
+
+select e.first_name,e.last_name,e.salary from employees e where e.salary > (select AVG(t.salary) from employees t)
+order by e.salary DESC
+
+select e.employee_id,e.first_name,e.last_name from employees e where e.department_id in(    SELECT department_id
+    FROM employees
+    WHERE last_name LIKE '%u%')
+
+
+select * from employees  where  ROUND(MONTHS_BETWEEN(SYSDATE, hire_date)) > (
+SELECT
+    ROUND(AVG(MONTHS_BETWEEN(SYSDATE, hire_date)))
+FROM employees)
+
+select d.department_name,count(e.employee_id),avg(e.salary) from employees e inner join departments d on e.department_id=d.department_id GROUP BY d.department_name
+
+
+select e.first_name , e.last_name  from employees e where e.salary < ANY (select t.salary from employees t inner join departments d on d.department_id=t.department_id
+where d.department_name ='IT')
+
+select e.department_id from employees e where  e.salary > any(select AVG(salary) FROM employees) GROUP BY department_id  having  COUNT(*) >= 1;
+
+select e.first_name,e.last_name,e.salary from employees e where  e.salary > (select AVG(salary) FROM employees)  order by e.salary desc FETCH FIRST 5  ROWS ONLY;
+
+
+SELECT
+    r.region_name,
+    COUNT( c.country_id),
+    COUNT( e.employee_id)
+FROM regions r
+LEFT JOIN countries c   ON r.region_id = c.region_id
+LEFT JOIN locations l   ON c.country_id = l.country_id
+LEFT JOIN departments d ON l.location_id = d.location_id
+LEFT JOIN employees e   ON d.department_id = e.department_id
+GROUP BY r.region_name;
+
+SELECT EXTRACT(MONTH FROM hire_date),COUNT(employee_id)FROM employees GROUP BY  EXTRACT(MONTH FROM hire_date);
+
+select AVG(e.salary) AS srednia_pensja, d.department_name from employees e inner join departments d on e.department_id = d.department_id
+group by d.department_name
+order by  srednia_pensja desc FETCH FIRST 3  ROWS ONLY;
