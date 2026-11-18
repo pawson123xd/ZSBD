@@ -1,0 +1,84 @@
+CREATE OR REPLACE VIEW v_wysokie_pensje as select * from employees e where e.salary  > 6000
+ 
+CREATE OR REPLACE VIEW v_wysokie_pensje as select * from employees e where e.salary  > 12000
+ 
+drop VIEW v_wysokie_pensje
+ 
+CREATE OR REPLACE VIEW zadanie1 AS 
+SELECT e.employee_id, e.last_name, e.first_name 
+FROM employees e
+inner join departments d on e.department_id=d.department_id
+where d.department_name='Finance'
+ 
+CREATE OR REPLACE VIEW zadanie2 AS 
+SELECT e.employee_id, e.last_name, e.first_name,e.salary,e.job_id,e.email,e.hire_date
+FROM employees e
+where e.salary Between 5000 and 12000;
+INSERT INTO zadanie2 (employee_id, first_name, last_name, email, hire_date, job_id, salary) 
+VALUES (207, 'joe', 'Gram', 'joegram@gmail.com', '2026-11-08', 'AD_ASST', 7000);
+UPDATE zadanie2 
+SET salary = 9000
+WHERE employee_id = 207;
+DELETE FROM zadanie2 
+WHERE employee_id = 207;
+ 
+INSERT INTO zadanie1(employee_id, last_name, first_name) VALUES (207, 'Gram', 'joe');
+UPDATE zadanie1 
+SET first_name= 'jan'
+WHERE employee_id = 207;
+DELETE FROM zadanie1 
+WHERE employee_id = 207;
+
+
+CREATE VIEW zadanie3 AS
+ select    
+    e.department_id,
+    d.department_name,
+    COUNT(d.department_name) AS liczba_pracownikow,
+    AVG(e.salary) AS srednia_pensja,
+    MAX(e.salary) AS najwyzsza_pensja
+    from employees e
+    inner join departments  d on d.department_id=e.department_id
+    GROUP  by      e.department_id,d.department_name
+    having COUNT(d.department_name) >= 4
+INSERT INTO zadanie3  (employee_id, d.department_name, LICZBA_PRACOWNIKOW, SREDNIA_PENSJA,NAJWYZSZA_PENSJA)
+VALUES (207,Finance,65,23,18798); 
+
+
+CREATE OR REPLACE VIEW zadanie8 AS 
+SELECT * FROM employees e 
+WHERE e.salary BETWEEN 5000 AND 12000
+WITH CHECK OPTION;
+INSERT INTO zadanie8 (
+    employee_id, first_name, last_name, email, phone_number, 
+    hire_date, job_id, salary, commission_pct, manager_id, department_id
+)
+VALUES (
+    207, 'Jan', 'Kowalski', 'JKOWALSK', '515.123.4567', 
+    SYSDATE, 'IT_PROG', 8000, NULL, 103, 60
+);
+INSERT INTO zadanie8 (
+    employee_id, first_name, last_name, email, phone_number, 
+    hire_date, job_id, salary, commission_pct, manager_id, department_id
+)
+VALUES (
+    207, 'Jan', 'Kowalski', 'JKOWALSK', '515.123.4567', 
+    SYSDATE, 'IT_PROG', 13000, NULL, 103, 60
+);
+
+
+CREATE VIEW zadanie9 AS
+SELECT 
+    e.employee_id,e.first_name,e.last_name,d.department_name FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+WHERE e.employee_id IN (
+    SELECT manager_id
+    FROM employees
+    WHERE manager_id IS NOT NULL
+);
+
+CREATE VIEW zadanie10 AS
+SELECT *
+FROM employees e
+ORDER BY e.salary desc
+FETCH FIRST 10 ROWS ONLY;
